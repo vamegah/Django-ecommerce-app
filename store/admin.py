@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product
+from .models import Product, Variation
 
 # Register your models here.
 # Register the Product model with the Django admin site
@@ -16,3 +16,14 @@ class ProductAdmin(admin.ModelAdmin):
 # Register the Product model with the customized ProductAdmin class
 admin.site.register(Product, ProductAdmin)
 # This code registers the Product model with the Django admin site, allowing it to be managed through the admin interface.
+
+class VariationAdmin(admin.ModelAdmin):
+    """
+    Customizes the admin interface for the Variation model.
+    """
+    list_display = ('product', 'variation_category', 'variation_value', 'variation_image', 'is_active',)
+    list_editable = ('is_active',)
+    list_filter = ('product', 'variation_category', 'variation_value', 'variation_image',)
+
+admin.site.register(Variation, VariationAdmin) # Register the Variation model with the admin site
+# This allows the Variation model to be managed through the Django admin interface as well.

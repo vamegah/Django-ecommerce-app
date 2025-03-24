@@ -47,6 +47,7 @@ class Dev(Configuration):
             'category',
             'accounts',
             'store',
+            'carts',
         ]
 
         MIDDLEWARE = [
@@ -73,6 +74,7 @@ class Dev(Configuration):
                         'django.contrib.auth.context_processors.auth',
                         'django.contrib.messages.context_processors.messages',
                         'category.context_processors.menu_links',  # Add your custom context processor here
+                        'carts.context_processors.counter',  # Add your custom context processor here
                     ],
                 },
             },
