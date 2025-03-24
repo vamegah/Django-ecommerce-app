@@ -5,50 +5,51 @@ from django.urls import reverse
 
 # Create your models here.
 class Product(models.Model):
-   product_name = models.CharField(max_length=200, unique=True)
-   slug = models.SlugField(max_length=200, unique=True)
-   description = models.TextField(max_length=500, blank=True)
-   price = models.IntegerField()
-   images = models.ImageField(upload_to='photos/products')
-   stock = models.IntegerField()
-   is_available = models.BooleanField(default=True)
-   category = models.ForeignKey(Category, on_delete=models.CASCADE)
-   created_date = models.DateTimeField(auto_now_add=True)
-   modified_date = models.DateTimeField(auto_now=True)
+    product_name = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True)
+    description = models.TextField(max_length=500, blank=True)
+    price = models.PositiveIntegerField()
+    images = models.ImageField(upload_to='photos/products')
+    stock = models.PositiveIntegerField()
+    is_available = models.BooleanField(default=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
-   def get_slug_url(self):
-       return reverse("product_detail", args=[self.category.slug, self.slug])
+    def get_slug_url(self):
+        return reverse("product_detail", args=[self.category.slug, self.slug])
 
-   
-   def __str__(self):
-       return self.product_name
-   
+    def __str__(self):
+        return self.product_name
+
+
 class VariationManager(models.Manager):
+    def by_category(self, category):
+        return self.filter(variation_category=category, is_active=True)
+
     def colors(self):
-        return super(VariationManager, self).filter(variation_category='color', is_active=True)
+        return self.by_category('color')
 
     def sizes(self):
-        return super(VariationManager, self).filter(variation_category='size', is_active=True)
-    
+        return self.by_category('size')
 
-variation_category_choice = (
-    ('color', 'color'),
-    ('size', 'size'),
+
+VARIATION_CATEGORY_CHOICES = (
+    ('color', 'Color'),
+    ('size', 'Size'),
 )
 
-# Create variation manager
+
 class Variation(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    variation_category = models.CharField(max_length=200, choices=variation_category_choice, default='color')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='variations')
+    variation_category = models.CharField(max_length=200, choices=VARIATION_CATEGORY_CHOICES, default='color')
     variation_value = models.CharField(max_length=200)
-    # for colors, we want to store an image, so we can use an ImageField
     variation_image = models.ImageField(upload_to='photos/products/variation', blank=True)
     is_active = models.BooleanField(default=True)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
-    objects = VariationManager()  # create an instance of the variation manager
+    objects = VariationManager()
 
     def __str__(self):
-        return self.variation_value
-   
+        return f"{self.variation_category}: {self.variation_value}"

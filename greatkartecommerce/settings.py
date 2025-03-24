@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from configurations import Configuration, values
+from django.contrib.messages import constants as messages
 
 
 
@@ -148,6 +149,21 @@ class Dev(Configuration):
         # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
         DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+        MESSAGE_TAGS = {
+            'messages.ERROR': 'danger',
+        }
+
+        # Email configuration
+        #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+        # SMTP configuration
+        EMAIL_HOST = 'smtp.gmail.com'
+        EMAIL_PORT = 587
+        EMAIL_USE_TLS = True
+        EMAIL_HOST_USER = 'XXXXXXXXXXXXXXXXXX'
+        EMAIL_HOST_PASSWORD = 'XXXXXXXXXXXXXXXXXX'
+
 
         class Dev(Configuration):
             DEBUG = values.BooleanValue(False)  # Set to True for development, False for production
