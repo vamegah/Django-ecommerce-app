@@ -158,11 +158,12 @@ class Dev(Configuration):
         #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
         # SMTP configuration
+        EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
         EMAIL_HOST = 'smtp.gmail.com'
         EMAIL_PORT = 587
         EMAIL_USE_TLS = True
-        EMAIL_HOST_USER = 'XXXXXXXXXXXXXXXXXX'
-        EMAIL_HOST_PASSWORD = 'XXXXXXXXXXXXXXXXXX'
+        EMAIL_HOST_USER = 'vamega13@gmail.com'
+        EMAIL_HOST_PASSWORD = 'Ozeghana2014'
 
 
         class Dev(Configuration):
