@@ -162,8 +162,8 @@ class Dev(Configuration):
         EMAIL_HOST = 'smtp.gmail.com'
         EMAIL_PORT = 587
         EMAIL_USE_TLS = True
-        EMAIL_HOST_USER = 'vamega13@gmail.com'
-        EMAIL_HOST_PASSWORD = 'Ozeghana2014'
+        EMAIL_HOST_USER = 'XXXXXXXXXXXXXXXXXXX'
+        EMAIL_HOST_PASSWORD = 'XXXXXXXXXXXXXXX'
 
 
         class Dev(Configuration):
