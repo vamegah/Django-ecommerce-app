@@ -9,7 +9,10 @@ def counter(request):
     else:
         try:
             cart = Cart.objects.filter(cart_id=_cart_id(request))  # Retrieve the cart object based on the cart ID
-            cart_items = CartItem.objects.all().filter(cart=cart[:1])  # Get all cart items for the first cart object
+            if request.user.is_authenticated:
+                cart_items = CartItem.objects.all().filter(user=request.user)  # Get all cart items for the authenticated user
+            else:
+                cart_items = CartItem.objects.all().filter(cart=cart[:1])  # Get all cart items for the first cart object
             
             cart_item_count = 0  # Initialize the cart item count
             for cart_item in cart_items:

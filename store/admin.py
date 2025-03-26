@@ -21,9 +21,9 @@ class VariationAdmin(admin.ModelAdmin):
     """
     Customizes the admin interface for the Variation model.
     """
-    list_display = ('product', 'variation_category', 'variation_value', 'variation_image', 'is_active',)
+    list_display = ('product', 'variation_category', 'variation_value', 'is_active')
     list_editable = ('is_active',)
-    list_filter = ('product', 'variation_category', 'variation_value', 'variation_image',)
+    list_filter = ('product', 'variation_category', 'variation_value')
 
 admin.site.register(Variation, VariationAdmin) # Register the Variation model with the admin site
 # This allows the Variation model to be managed through the Django admin interface as well.

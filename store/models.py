@@ -24,25 +24,22 @@ class Product(models.Model):
 
 
 class VariationManager(models.Manager):
-    def by_category(self, category):
-        return self.filter(variation_category=category, is_active=True)
 
     def colors(self):
-        return self.by_category('color')
+        return super(VariationManager, self).filter(variation_category='color', is_active=True)
 
     def sizes(self):
-        return self.by_category('size')
+        return super(VariationManager, self).filter(variation_category='size', is_active=True)
 
 
-VARIATION_CATEGORY_CHOICES = (
-    ('color', 'Color'),
-    ('size', 'Size'),
+variation_category_choice = (
+    ('color', 'color'),
+    ('size', 'size'),
 )
 
-
 class Variation(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='variations')
-    variation_category = models.CharField(max_length=200, choices=VARIATION_CATEGORY_CHOICES, default='color')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='variation_set')
+    variation_category = models.CharField(max_length=200, choices=variation_category_choice)
     variation_value = models.CharField(max_length=200)
     variation_image = models.ImageField(upload_to='photos/products/variation', blank=True)
     is_active = models.BooleanField(default=True)
@@ -52,4 +49,4 @@ class Variation(models.Model):
     objects = VariationManager()
 
     def __str__(self):
-        return f"{self.variation_category}: {self.variation_value}"
+        return self.variation_value

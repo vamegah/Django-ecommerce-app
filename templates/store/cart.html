@@ -39,11 +39,11 @@
                                                 {{cart_item.product.product_name }}</a>
                                             <p class="text-muted small">
                                                 {% if cart_item.variations.all %}
-                                                {% for item in cart_item.variations.all %}
-                                                {{ item.variation_category | capfirst }} : {{ item.variation_value | capfirst }} <br>
-                                                {% endfor %}
+                                                  {% for item in cart_item.variations.all %}
+                                                     {{ item.variation_category | capfirst }} : {{ item.variation_value | capfirst }} <br>
+                                                   {% endfor %}
                                                 {% endif %}
-                                            </p>
+                                                </p>
                                         </figcaption>
                                     </figure>
                                 </td>
@@ -52,7 +52,7 @@
                                     <div class="col">
                                         <div class="input-group input-spinner">
                                             <div class="input-group-prepend">
-                                                <a href="{% url 'remove_from_cart' cart_item.product.id, cart_item.id %}"
+                                                <a href="{% url 'remove_from_cart' cart_item.product.id cart_item.id %}"
                                                     class="btn btn-light" type="button" id="button-plus"> <i
                                                         class="fa fa-minus"></i> </a>
                                             </div>
@@ -111,7 +111,7 @@
                         <p class="text-center mb-3">
                             <img src="{% static './images/misc/payments.png' %}" height="26">
                         </p>
-                        <a href="#" class="btn btn-primary btn-block"> Checkout </a>
+                        <a href="{% url 'checkout' %}" class="btn btn-primary btn-block"> Checkout </a>
                         <a href="{% url 'store' %}" class="btn btn-light btn-block">Continue Shopping</a>
                     </div> <!-- card-body.// -->
                 </div> <!-- card.// -->
