@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Variation
+from .models import Product, Variation, ReviewRating
 
 # Register your models here.
 # Register the Product model with the Django admin site
@@ -27,3 +27,6 @@ class VariationAdmin(admin.ModelAdmin):
 
 admin.site.register(Variation, VariationAdmin) # Register the Variation model with the admin site
 # This allows the Variation model to be managed through the Django admin interface as well.
+
+admin.site.register(ReviewRating) # Register the ReviewRating model with the admin site
+# This allows the ReviewRating model to be managed through the Django admin interface as well.
