@@ -49,6 +49,8 @@ class Dev(Configuration):
             'accounts',
             'store',
             'carts',
+            'orders',
+           
         ]
 
         MIDDLEWARE = [
@@ -132,10 +134,10 @@ class Dev(Configuration):
         # Static files (CSS, JavaScript, Images)
         # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-        STATIC_URL = 'static/'# URL prefix for static files
+        STATIC_URL = 'static/'  # URL prefix for static files
         # Note: In development, you may want to use `python manage.py runserver` to serve static files automatically.
         STATICFILES_DIRS = [
-              os.path.join(BASE_DIR, "static"),
+              BASE_DIR / "greatkart/static",
               ]  # Add your static files directory here
 
         # Media files (e.g., uploaded files)

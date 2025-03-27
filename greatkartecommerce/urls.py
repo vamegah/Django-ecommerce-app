@@ -27,6 +27,9 @@ urlpatterns = [
     path('store/', include('store.urls')),
     path('cart/', include('carts.urls')),
     path('accounts/', include('accounts.urls')),
+
+    path('orders/', include('orders.urls')),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # This line serves media files during development. In production, you would typically serve these files using a web server like Nginx or Apache.
 # The `static()` function is used to add the URL patterns for serving media files.

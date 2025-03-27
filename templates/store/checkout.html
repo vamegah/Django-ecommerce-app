@@ -14,7 +14,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title mb-4">Billing Address</h4>
-                        <form action="#" method="POST">
+                        <form action="{% url 'place_order' %}" method="POST">
                             {% csrf_token %}
                             <div class="form-row">
                                 <div class="col form-group">
@@ -31,10 +31,6 @@
                                     <label for="">Email</label>
                                     <input type="email" name="email" class="form-control" required>
                                 </div>
-                                <div class="col form-group">
-                                    <label for="">Phone Number</label>
-                                    <input type="text" name="phone" class="form-control" required>
-                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="col form-group">
@@ -48,22 +44,30 @@
                             </div>
                             <div class="form-row">
                                 <div class="col form-group">
-                                    <label for="">City</label>
-                                    <input type="text" name="city" class="form-control" required>
+                                    <label for="">Zip Code</label>
+                                    <input type="text" name="zip_code" class="form-control" required>
                                 </div>
                                 <div class="col form-group">
                                     <label for="">State</label>
                                     <input type="text" name="state" class="form-control" required>
                                 </div>
+                            </div>
+                            <div class="form-row">
                                 <div class="col form-group">
-                                    <label for="">Country</label>
-                                    <input type="text" name="country" class="form-control" required>
+                                    <label for="">City</label>
+                                    <input type="text" name="city" class="form-control" required>
                                 </div>
                             </div>
                             <div class="form-row">
-                                <label for="">Order Note</label>
-                                <textarea name="order_note" rows="2" class="form-control"></textarea>
+                                <div class="col form-group">
+                                    <label for="">Phone Number</label>
+                                    <input type="text" name="phone" class="form-control" required>
+                                </div>
                             </div>
+                            <div class="form-row">
+                                <button type="submit" name="submit" class="btn btn-danger btn-block">Save &
+                                    Continue</button>
+                                </div>
 
 
                     </div>
@@ -97,7 +101,7 @@
                                                     {% if cart_item.variations.all %}
                                                     {% for item in cart_item.variations.all %}
                                                     {{ item.variation_category | capfirst }} : {{ item.variation_value | capfirst }} <br>
-                                                    {% endfor %}
+                                                     {% endfor %}
                                                     {% endif %}
                                                 </p>
                                             </figcaption>
