@@ -1,15 +1,29 @@
 from django.contrib import admin
-from .models import Product, Variation, ReviewRating
+from .models import Product, Variation, ReviewRating, ProductGallery
+import admin_thumbnails 
 
 # Register your models here.
 # Register the Product model with the Django admin site
 # This allows the Product model to be managed through the Django admin interface.
+
+@admin_thumbnails.thumbnail('image')
+class ProductGalleryInline(admin.TabularInline):
+    """
+    Inline admin interface for the ProductGallery model.
+    """
+    model = ProductGallery
+    extra = 1 # Number of empty forms to display
+   
+
+
+# Define a custom admin class for the Product model
 class ProductAdmin(admin.ModelAdmin):
     """
     Customizes the admin interface for the Product model.
     """
     list_display = ('product_name', 'price', 'stock', 'category', 'modified_date', 'is_available')
     prepopulated_fields = {'slug': ('product_name',)}
+    inlines = [ProductGalleryInline] # Add the ProductGalleryInline to the ProductAdmin class
     # This line specifies that the 'slug' field should be automatically populated with the 'product_name' field.
     # This is useful for creating unique URLs for each product.
 
@@ -30,3 +44,7 @@ admin.site.register(Variation, VariationAdmin) # Register the Variation model wi
 
 admin.site.register(ReviewRating) # Register the ReviewRating model with the admin site
 # This allows the ReviewRating model to be managed through the Django admin interface as well.
+
+# The code above defines the admin interface for the Product and Variation models in a Django application.
+admin.site.register(ProductGallery) # Register the ProductGallery model with the admin site
+# This allows the ProductGallery model to be managed through the Django admin interface as well.

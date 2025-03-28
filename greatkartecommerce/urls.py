@@ -15,14 +15,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 import greatkart.views as views
 from django.conf.urls.static import static
 from django.conf import settings
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    re_path(r'admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    re_path(r'^secret/', admin.site.urls),
     path('', views.home, name='home'),
     path('store/', include('store.urls')),
     path('cart/', include('carts.urls')),

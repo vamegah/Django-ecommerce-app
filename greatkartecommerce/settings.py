@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from configurations import Configuration, values
 from django.contrib.messages import constants as messages
+from decouple import config
 
 
 
@@ -27,10 +28,10 @@ class Dev(Configuration):
         # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
         # SECURITY WARNING: keep the secret key used in production secret!
-        SECRET_KEY = 'django-insecure-^yuhu$jjv0g#azo2hkgh$*scsnggfe#bv1)#j*jmc)!!=*&s=#'
+        SECRET_KEY = config('SECRET_KEY')
 
         # SECURITY WARNING: don't run with debug turned on in production!
-        DEBUG = True
+        DEBUG = config('DEBUG', default=False, cast=bool)
 
         ALLOWED_HOSTS = []
 
@@ -50,6 +51,7 @@ class Dev(Configuration):
             'store',
             'carts',
             'orders',
+            'admin_honeypot',  # Honeypot for admin login
            
         ]
 
@@ -61,7 +63,13 @@ class Dev(Configuration):
             'django.contrib.auth.middleware.AuthenticationMiddleware',
             'django.contrib.messages.middleware.MessageMiddleware',
             'django.middleware.clickjacking.XFrameOptionsMiddleware',
+            'django_session_timeout.middleware.SessionTimeoutMiddleware', # session timeout middleware
+
         ]
+
+        SESSION_EXPIRE_SECONDS = 3600  # Session timeout in seconds (e.g., 60 seconds = 1 minute)
+        SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True # Expire session after last activity
+        SESSION_TIMEOUT_REDIRECT = 'accounts:login'  # Redirect to login page after timeout
 
         ROOT_URLCONF = 'greatkartecommerce.urls'
 
@@ -153,21 +161,25 @@ class Dev(Configuration):
         DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
         MESSAGE_TAGS = {
-            'messages.ERROR': 'danger',
+            messages.ERROR: 'danger',
         }
 
         # Email configuration
         #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
         # SMTP configuration
-        EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-        EMAIL_HOST = 'smtp.gmail.com'
-        EMAIL_PORT = 587
-        EMAIL_USE_TLS = True
-        EMAIL_HOST_USER = 'XXXXXXXXXXXXXXXXXXX'
-        EMAIL_HOST_PASSWORD = 'XXXXXXXXXXXXXXX'
+        EMAIL_BACKEND = config('EMAIL_BACKEND')
+        EMAIL_HOST = config('EMAIL_HOST')
+        EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
+        EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+        EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+        EMAIL_USE_SSL = config('EMAIL_USE_SSL', default=False, cast=bool)
+        
 
 
-        class Dev(Configuration):
-            DEBUG = values.BooleanValue(False)  # Set to True for development, False for production
-            SECRET_KEY = values.SecretValue()
+class Prod(Dev):
+    """
+    Production settings
+    """
+    DEBUG = values.BooleanValue(False)  # Set to True for development, False for production
+    SECRET_KEY = values.SecretValue()

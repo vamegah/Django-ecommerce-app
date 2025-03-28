@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404  # Import the render and redirect functions to render templates and redirect to URLs
-from .models import Product, ReviewRating # Import the Product and Variation models to access product data
+from .models import Product, ReviewRating, ProductGallery # Import the Product and Variation models to access product data
 from category.models import Category
 from carts.models import CartItem
 from carts.views import _cart_id  # Import the _cart_id function to get the cart ID from the request
@@ -8,6 +8,7 @@ from django.db.models import Q
 from .forms import ReviewForm  # Import the ReviewForm to handle review submissions
 from django.contrib import messages  # Import the messages module to display messages to the user
 from orders.models import OrderProduct  # Import the OrderProduct model to check if a product is in an order
+
 # This code defines the views for the store application. It includes functions to render the store page, product detail page, search results, and submit reviews.
 
 # Create your store views here.
@@ -58,6 +59,9 @@ def product_detail(request, category_slug, product_slug):
     else:
         order_product = None  # Set order_product to None if the user is not authenticated
 
+    # Get the product gallery images
+    product_gallery = ProductGallery.objects.filter(product_id=single_product.id)  # Get the product gallery images for the product
+
     reviews = ReviewRating.objects.filter(product_id=single_product.id, status=True)  # Get the reviews for the product
 
 
@@ -66,6 +70,7 @@ def product_detail(request, category_slug, product_slug):
         'in_cart': in_cart,  # Add the in_cart flag to the context dictionary
         'order_product': order_product,  # Add the order_product flag to the context dictionary
         'reviews': reviews,  # Add the reviews to the context dictionary
+        'product_gallery': product_gallery,  # Add the product gallery images to the context dictionary
     
 
 
