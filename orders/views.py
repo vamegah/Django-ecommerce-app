@@ -98,6 +98,8 @@ def place_order(request, total=0, quantity=0,):
 
     if request.method == 'POST':
         form = OrderForm(request.POST)
+        print(form.errors)
+        
         if form.is_valid():
             # Store all the billing information inside Order table
             data = Order()
@@ -135,8 +137,8 @@ def place_order(request, total=0, quantity=0,):
                 'grand_total': grand_total,
             }
             return render(request, 'orders/payments.html', context)
-    else:
-        return redirect('checkout')
+    # Add a return statement for non-POST requests
+    return redirect('checkout')
 
 
 def order_complete(request):
